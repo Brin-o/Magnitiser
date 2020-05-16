@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class playerSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject playerPrefab = default;
     public void SpawnPlayer()
     {
         Vector3 spawnPoint = transform.position;

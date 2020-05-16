@@ -4888,7 +4888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayDebugging: 1
-  startFlipped: 1
+  startFlipped: 0
   magnetised: 1
   speedMod: 15
   magnetLenght: 3
@@ -4912,8 +4912,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"respawnScript","value":null,"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
+    _json: '{"declarations":{"collection":{"$content":[{"name":"respawnScript","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 0}
 --- !u!114 &430836011405409945
 MonoBehaviour:
   m_ObjectHideFlags: 0

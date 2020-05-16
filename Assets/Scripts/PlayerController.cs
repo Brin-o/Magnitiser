@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public bool grounded = false;
     float yPosForce = 0;
     float yNegForce = 0;
+    Vector2 prevVel;
 
     [Header("Object References")]
     [SerializeField] public ParticleSystem dustClouds = default;
@@ -48,7 +49,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Jump"))
         {
-            Debug.Log("Jump axis active");
             blip.Play();
 
             //TODO menjaj na aniamtion state based switch statment
@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
                 m_animator.SetTrigger("Rotate180-");
         }
 
+        prevVel = m_rigibody.velocity;
     }
 
     private void FixedUpdate()
@@ -89,7 +90,24 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
             grounded = true;
 
+        AddHitFroce(prevVel);
     }
+    void AddHitFroce(Vector2 vel)
+    {
+        int mod = 1;
+        if (vel.y < 0)
+            mod *= -1;
+
+        float addingVel = Mathf.Abs(vel.x) * mod;
+        addingVel *= 25f;
+
+        m_rigibody.AddForce(new Vector2(0, addingVel));
+        Debug.Log("Adding hit force of " + addingVel);
+
+    }
+
+
+
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
@@ -108,12 +126,12 @@ public class PlayerController : MonoBehaviour
                 aboveMod *= -1;
 
             if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
-                yNegForce = LibBrin_Lerp.EaseIn(yNegForce, -yForceClamp, 0.5f) * aboveMod;
-            //yNegForce = LerpEaseOut(yNegForce, -yForceClamp, 0.8f) * aboveMod;
+                yNegForce = LibBrin_Lerp.EaseOut(yNegForce, -yForceClamp, 0.5f) * aboveMod;
+
 
             else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
-                yNegForce = LibBrin_Lerp.EaseOut(yNegForce, yForceClamp, 0.5f) * aboveMod;
-            //yNegForce = LerpEaseOut(yNegForce, yForceClamp, 0.8f) * aboveMod;
+                yNegForce = LibBrin_Lerp.EaseIn(yNegForce, yForceClamp, 0.5f) * aboveMod;
+
         }
         else
             yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
@@ -146,12 +164,6 @@ public class PlayerController : MonoBehaviour
         if (rayDebugging)
             Debug.DrawRay(myTrans.position, direction * magnetLenght, debugColor);
         return Physics2D.Raycast(myTrans.position, direction, magnetLenght, groundLayer);
-    }
-
-    float LerpEaseOut(float a, float b, float t)
-    {
-        //t = Mathf.Sin(t * Mathf.PI * 0.5f);
-        return Mathf.Lerp(a, b, t);
     }
 
 }
