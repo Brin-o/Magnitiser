@@ -18,15 +18,24 @@ public class PlayerController : MonoBehaviour
 
 
 
-
-    public enum MagnetCalcType
+    //MAGNETISM CONFIGURATOR
+    //Spreminjanje teh vrednosti bo se igralo s tem kako delujejo 
+    enum MagnetCalcType
     {
         timeBased,
         distanceBased
     }
-    [Header("Magnetism Values")]
-    public MagnetCalcType calcType;
+    [Header("Interpolation rules")]
+    MagnetCalcType calcType = MagnetCalcType.distanceBased;
+    bool interpolateFrom0 = false;
+    //MAGNETISM CONFIGURATOR OVER
 
+
+    [SerializeField] [Range(0.01f, 0.5f)] float aLerpMin = 0.1f;
+
+    [Space]
+
+    [Header("Magnetism Values")]
     [SerializeField] [Range(1, 5)] float magnetLenght = 5f;
     [SerializeField] float yForce = 0;
     [SerializeField] float yForceClamp = 25f;
@@ -112,8 +121,6 @@ public class PlayerController : MonoBehaviour
         addingVel *= 25f;
 
         m_rigibody.AddForce(new Vector2(0, addingVel));
-        Debug.Log("Adding hit force of " + addingVel);
-
     }
 
 
@@ -130,7 +137,75 @@ public class PlayerController : MonoBehaviour
 
         switch (calcType)
         {
-            case MagnetCalcType.timeBased:
+
+
+            case MagnetCalcType.distanceBased:
+                #region  NegativeHit
+                if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
+                {
+
+                    float a = yNegForce;
+                    if (interpolateFrom0)
+                        a = 0;
+
+                    float distance = negative.distance;
+                    float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
+
+                    //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
+                    int aboveMod = 1;
+                    if (negative.collider.gameObject.transform.position.y > transform.position.y)
+                        aboveMod *= -1;
+
+                    if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
+                        yNegForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
+
+
+                    else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
+                        yNegForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
+
+                    if (Mathf.Approximately(yNegForce, 0f))
+                        yNegForce = 0f;
+
+                }
+                else
+                    yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
+                #endregion
+
+                #region  PositiveHit
+                if (positive.collider != null && magnetised)
+                {
+
+                    float a = yPosForce;
+                    if (interpolateFrom0)
+                        a = 0;
+
+                    float distance = positive.distance;
+                    float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
+
+
+                    int aboveMod = 1;
+                    if (positive.collider.gameObject.transform.position.y > transform.position.y)
+                        aboveMod *= -1;
+
+                    if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
+                        yPosForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
+
+
+                    else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
+                        yPosForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
+
+
+                    if (Mathf.Approximately(yPosForce, 0f))
+                        yPosForce = 0f;
+                }
+                else
+                    yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
+                #endregion
+
+                return yPosForce + yNegForce; ;
+
+            #region Old-Magnetism
+            case MagnetCalcType.timeBased: //TA KODA JE TU SAMO ZA REFERENCO, TRENUTNO SE NE UPORABLJA
                 #region  NegativeHit
                 if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
                 {
@@ -160,73 +235,21 @@ public class PlayerController : MonoBehaviour
 
                     if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
                         yPosForce = LibBrin_Lerp.EaseIn(yPosForce, -yForceClamp, 0.5f) * aboveMod;
-                    //    yPosForce = LerpEaseOut(yPosForce, -yForceClamp, 0.8f) * aboveMod;
+
 
                     else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
                         yPosForce = LibBrin_Lerp.EaseOut(yPosForce, yForceClamp, 0.5f) * aboveMod;
-                    //    yPosForce = LerpEaseOut(yPosForce, yForceClamp, 0.8f) * aboveMod;
+
                 }
                 else
                     yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
                 #endregion
 
                 return yPosForce + yNegForce;
-
-            case MagnetCalcType.distanceBased:
-                #region  NegativeHit
-                if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
-                {
-                    float distance = negative.distance;
-                    float distancePerc = 1 - (distance / magnetLenght); //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
-                    Debug.Log("Negative dstance perc je " + distancePerc);
-
-                    //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
-                    int aboveMod = 1;
-                    if (negative.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
-                        yNegForce = LibBrin_Lerp.EaseOut(yNegForce, -yForceClamp, distancePerc) * aboveMod;
-
-
-                    else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
-                        yNegForce = LibBrin_Lerp.EaseIn(yNegForce, yForceClamp, distancePerc) * aboveMod;
-
-                }
-                else
-                    yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
-                #endregion
-
-                #region  PositiveHit
-                if (positive.collider != null && magnetised)
-                {
-
-                    float distance = positive.distance;
-                    float distancePerc = 1 - (distance / magnetLenght); //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
-                    Debug.Log("Negative dstance perc je " + distancePerc);
-
-                    int aboveMod = 1;
-                    if (positive.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
-                        yPosForce = LibBrin_Lerp.EaseIn(yPosForce, -yForceClamp, distancePerc) * aboveMod;
-                    //    yPosForce = LerpEaseOut(yPosForce, -yForceClamp, 0.8f) * aboveMod;
-
-                    else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
-                        yPosForce = LibBrin_Lerp.EaseOut(yPosForce, yForceClamp, distancePerc) * aboveMod;
-                    //    yPosForce = LerpEaseOut(yPosForce, yForceClamp, 0.8f) * aboveMod;
-                }
-                else
-                    yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
-                #endregion
-                return 0;
-
-
-
-
+            #endregion
 
             default:
+                Debug.LogError("This is not a correct enum, this shouldn't happen ever, check code.");
                 return default;
         }
 

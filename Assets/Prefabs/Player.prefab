@@ -4891,9 +4891,10 @@ MonoBehaviour:
   startFlipped: 0
   magnetised: 1
   speedMod: 15
+  aLerpMin: 0.1
   magnetLenght: 3
   yForce: 0
-  yForceClamp: 50
+  yForceClamp: 30
   groundLayer:
     serializedVersion: 2
     m_Bits: 512

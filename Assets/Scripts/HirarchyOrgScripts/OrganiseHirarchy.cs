@@ -25,6 +25,6 @@ public class OrganiseHirarchy : MonoBehaviour
             if (lostChild.transform.parent != this.transform)
                 lostChild.transform.parent = this.transform;
         }
-
+        running = false;
     }
 }

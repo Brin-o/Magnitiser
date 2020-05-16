@@ -2991,5 +2991,15 @@ PrefabInstance:
       propertyPath: magnetLenght
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 430836011405409950, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
+        type: 3}
+      propertyPath: calcType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 430836011405409950, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
+        type: 3}
+      propertyPath: interpolateFrom0
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
