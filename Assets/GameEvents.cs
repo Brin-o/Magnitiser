@@ -26,4 +26,13 @@ public class GameEvents : MonoBehaviour
             onCollectiblePickup(id);
         }
     }
+
+    public event Action respawnPlayer;
+    public void RespawnPlayer()
+    {
+        if (respawnPlayer != null)
+        {
+            respawnPlayer();
+        }
+    }
 }
