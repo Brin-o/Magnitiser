@@ -51,6 +51,8 @@ namespace UnityStandardAssets.CrossPlatformInput
                     o.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
                 }
             }
+
+            GetComponent<Canvas>().worldCamera = Camera.main;
         }
 
 #if UNITY_EDITOR

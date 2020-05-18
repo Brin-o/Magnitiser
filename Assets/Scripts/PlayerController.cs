@@ -19,14 +19,8 @@ public class PlayerController : MonoBehaviour
 
 
     //MAGNETISM CONFIGURATOR
-    //Spreminjanje teh vrednosti bo se igralo s tem kako delujejo 
-    enum MagnetCalcType
-    {
-        timeBased,
-        distanceBased
-    }
-    [Header("Interpolation rules")]
-    MagnetCalcType calcType = MagnetCalcType.distanceBased;
+    //Spreminjanje teh vrednosti bo se igralo s tem kako delujejo
+
     bool interpolateFrom0 = false;
     //MAGNETISM CONFIGURATOR OVER
 
@@ -83,7 +77,6 @@ public class PlayerController : MonoBehaviour
                 m_animator.SetTrigger("Rotate180-");
         }
 
-        prevVel = m_rigibody.velocity;
     }
 
     private void FixedUpdate()
@@ -135,123 +128,69 @@ public class PlayerController : MonoBehaviour
     float YForce(RaycastHit2D positive, RaycastHit2D negative)
     {
 
-        switch (calcType)
+        #region  NegativeHit
+        if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
         {
 
+            float a = yNegForce;
+            if (interpolateFrom0)
+                a = 0;
 
-            case MagnetCalcType.distanceBased:
-                #region  NegativeHit
-                if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
-                {
+            float distance = negative.distance;
+            float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
 
-                    float a = yNegForce;
-                    if (interpolateFrom0)
-                        a = 0;
+            //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
+            int aboveMod = 1;
+            if (negative.collider.gameObject.transform.position.y > transform.position.y)
+                aboveMod *= -1;
 
-                    float distance = negative.distance;
-                    float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
-
-                    //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
-                    int aboveMod = 1;
-                    if (negative.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
-                        yNegForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
+            if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
+                yNegForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
 
 
-                    else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
-                        yNegForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
+            else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
+                yNegForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
 
-                    if (Mathf.Approximately(yNegForce, 0f))
-                        yNegForce = 0f;
+            if (Mathf.Approximately(yNegForce, 0f))
+                yNegForce = 0f;
 
-                }
-                else
-                    yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
-                #endregion
-
-                #region  PositiveHit
-                if (positive.collider != null && magnetised)
-                {
-
-                    float a = yPosForce;
-                    if (interpolateFrom0)
-                        a = 0;
-
-                    float distance = positive.distance;
-                    float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
-
-
-                    int aboveMod = 1;
-                    if (positive.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
-                        yPosForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
-
-
-                    else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
-                        yPosForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
-
-
-                    if (Mathf.Approximately(yPosForce, 0f))
-                        yPosForce = 0f;
-                }
-                else
-                    yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
-                #endregion
-
-                return yPosForce + yNegForce; ;
-
-            #region Old-Magnetism
-            case MagnetCalcType.timeBased: //TA KODA JE TU SAMO ZA REFERENCO, TRENUTNO SE NE UPORABLJA
-                #region  NegativeHit
-                if (negative.collider != null && magnetised) //ce hita karkoli gremo racunat sile
-                {
-                    //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
-                    int aboveMod = 1;
-                    if (negative.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (negative.collider.CompareTag("Positive")) //Privalcita se -> EaseIn
-                        yNegForce = LibBrin_Lerp.EaseOut(yNegForce, -yForceClamp, 0.5f) * aboveMod;
-
-
-                    else if (negative.collider.CompareTag("Negative")) //Odvracata se -> EaseOut
-                        yNegForce = LibBrin_Lerp.EaseIn(yNegForce, yForceClamp, 0.5f) * aboveMod;
-
-                }
-                else
-                    yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
-                #endregion
-
-                #region  PositiveHit
-                if (positive.collider != null && magnetised)
-                {
-                    int aboveMod = 1;
-                    if (positive.collider.gameObject.transform.position.y > transform.position.y)
-                        aboveMod *= -1;
-
-                    if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
-                        yPosForce = LibBrin_Lerp.EaseIn(yPosForce, -yForceClamp, 0.5f) * aboveMod;
-
-
-                    else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
-                        yPosForce = LibBrin_Lerp.EaseOut(yPosForce, yForceClamp, 0.5f) * aboveMod;
-
-                }
-                else
-                    yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
-                #endregion
-
-                return yPosForce + yNegForce;
-            #endregion
-
-            default:
-                Debug.LogError("This is not a correct enum, this shouldn't happen ever, check code.");
-                return default;
         }
+        else
+            yNegForce = Mathf.Lerp(yNegForce, 0, 0.5f);
+        #endregion
+
+        #region  PositiveHit
+        if (positive.collider != null && magnetised)
+        {
+
+            float a = yPosForce;
+            if (interpolateFrom0)
+                a = 0;
+
+            float distance = positive.distance;
+            float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
+
+
+            int aboveMod = 1;
+            if (positive.collider.gameObject.transform.position.y > transform.position.y)
+                aboveMod *= -1;
+
+            if (positive.collider.CompareTag("Negative")) //Privlacita se -> EaseIn
+                yPosForce = LibBrin_Lerp.EaseIn(a, -yForceClamp, distancePerc) * aboveMod;
+
+
+            else if (positive.collider.CompareTag("Positive")) //odvracata se -> EaseOut
+                yPosForce = LibBrin_Lerp.EaseOut(a, yForceClamp, distancePerc) * aboveMod;
+
+
+            if (Mathf.Approximately(yPosForce, 0f))
+                yPosForce = 0f;
+        }
+        else
+            yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
+        #endregion
+
+        return yPosForce + yNegForce; ;
 
     }
 
