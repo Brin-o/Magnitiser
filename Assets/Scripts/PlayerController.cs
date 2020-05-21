@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
     public bool grounded = false;
     float yPosForce = 0;
     float yNegForce = 0;
-    Vector2 prevVel;
 
     [Header("Object References")]
     [SerializeField] public ParticleSystem dustClouds = default;
@@ -101,20 +100,8 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
             grounded = true;
-
-        AddHitFroce(prevVel);
     }
-    void AddHitFroce(Vector2 vel)
-    {
-        int mod = 1;
-        if (vel.y < 0)
-            mod *= -1;
 
-        float addingVel = Mathf.Abs(vel.x) * mod;
-        addingVel *= 25f;
-
-        m_rigibody.AddForce(new Vector2(0, addingVel));
-    }
 
 
 

@@ -1440,6 +1440,11 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -1624010261
       objectReference: {fileID: 0}
+    - target: {fileID: 8808817260668168002, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
 --- !u!1001 &1323491847925178847

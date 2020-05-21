@@ -52,7 +52,7 @@ namespace UnityStandardAssets.CrossPlatformInput
                 }
             }
 
-            GetComponent<Canvas>().worldCamera = Camera.main;
+            //GetComponent<Canvas>().worldCamera = Camera.main;
         }
 
 #if UNITY_EDITOR
@@ -79,7 +79,7 @@ namespace UnityStandardAssets.CrossPlatformInput
         private void CheckEnableControlRig()
         {
 #if MOBILE_INPUT
-		EnableControlRig(true);
+            EnableControlRig(true);
 #else
             EnableControlRig(false);
 #endif
