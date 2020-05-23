@@ -13,21 +13,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool startFlipped = false;
     [SerializeField] bool magnetised = true;
     [SerializeField] float speedMod = 5f;
+    [Space]
     //Input values
     float xInput;
 
-
-
-    //MAGNETISM CONFIGURATOR
-    //Spreminjanje teh vrednosti bo se igralo s tem kako delujejo
-
     bool interpolateFrom0 = false;
     //MAGNETISM CONFIGURATOR OVER
-
-
     [SerializeField] [Range(0.01f, 0.5f)] float aLerpMin = 0.1f;
 
-    [Space]
+
 
     [Header("Magnetism Values")]
     [SerializeField] [Range(1, 5)] float magnetLenght = 5f;
