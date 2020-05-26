@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 7087720703291135756, guid: 4e11d54563ba9564ca80142c36691df8,
         type: 3}
       propertyPath: m_Name
-      value: Floor_Positive
+      value: Floor_Positive(1-1)
       objectReference: {fileID: 0}
     - target: {fileID: 7087720703291135759, guid: 4e11d54563ba9564ca80142c36691df8,
         type: 3}

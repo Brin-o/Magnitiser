@@ -1,31 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerController : MonoBehaviour
 {
-
-    [Header("Character stats")]
     [SerializeField] bool rayDebugging = true;
     [Space]
-    [SerializeField] bool startFlipped = false;
-    [SerializeField] bool magnetised = true;
-    [SerializeField] float speedMod = 5f;
-    [Space]
+
     //Input values
     float xInput;
 
+
+
+    [Header("Character stats")]
+    [SerializeField] bool startFlipped = false;
+    [SerializeField] bool magnetised = false;
+    [SerializeField] float speedMod = 5f;
+    [SerializeField] [Range(0.01f, 0.5f)] float minMangetForce = 0.1f;
+
+    //Rotation lerp values
+    [SerializeField] [Range(0.1f, 0.5f)] float rotationTime = 0.5f;
+    float currentRotationTime;
+    float rotateStart;
+    float rotateTarget;
+
     bool interpolateFrom0 = false;
     //MAGNETISM CONFIGURATOR OVER
-    [SerializeField] [Range(0.01f, 0.5f)] float aLerpMin = 0.1f;
 
 
-
+    [Space]
     [Header("Magnetism Values")]
     [SerializeField] [Range(1, 5)] float magnetLenght = 5f;
-    [SerializeField] float yForce = 0;
+    public float yForce = 0;
     [SerializeField] float yForceClamp = 25f;
     [SerializeField] LayerMask groundLayer = default;
     public bool grounded = false;
@@ -36,62 +43,139 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public ParticleSystem dustClouds = default;
     Animator m_animator;
     Rigidbody2D m_rigibody;
-    AudioSource blip;
-    Camera cam;
+    SoundController m_Sounds = default;
+
+
+
 
     void Start()
     {
         m_rigibody = GetComponent<Rigidbody2D>();
         m_animator = GetComponent<Animator>();
-        blip = GetComponent<AudioSource>();
-        cam = Camera.main;
-        if (startFlipped)
-            m_animator.SetTrigger("Rotate180+");
+        m_Sounds = GetComponentInChildren<SoundController>();
+
+
+        //start flipped
+        //if (startFlipped)
+        //    m_animator.SetTrigger("Rotate180+");
+
+        rotateStart = transform.localRotation.eulerAngles.z;
+        rotateTarget = transform.localRotation.eulerAngles.z;
     }
 
-    void Update()
+    void Update() //Player controlls
     {
         xInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
+
+        //Rotation controllerji (samo en naj je aktiven)
+        LerpRotation();
+        //AnimationRotate();
+
+    }
+
+    private void LerpRotation()
+    {
         if (Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Jump"))
         {
-            blip.Play();
 
-            //TODO menjaj na aniamtion state based switch statment
-            /*switch (switch_on)
+            currentRotationTime = 0f;
+            rotateStart = transform.rotation.eulerAngles.z;
+
+            //selection
+            switch (transform.rotation.eulerAngles.z)
             {
-                
+                case 0:
+                    rotateTarget = 180;
+                    break;
+
+                case 180:
+                    rotateTarget = 0;
+                    break;
+
                 default:
-            }*/
+                    switch (rotateTarget)
+                    {
+                        case 180:
+                            rotateTarget = 0;
+                            break;
+                        case 0:
+                            rotateTarget = 180;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
+            //rotateTarget = rotateStart + 180;
+        }
+
+        currentRotationTime += Time.deltaTime;
+        if (currentRotationTime > rotationTime)
+            currentRotationTime = rotationTime;
+
+        float perc = currentRotationTime / rotationTime;
+
+        Vector3 newRotation = new Vector3(0f, 0f, LibBrin_Lerp.EaseOut(rotateStart, rotateTarget, perc));
+
+
+        transform.rotation = Quaternion.Euler(newRotation);
+
+        if (transform.rotation.eulerAngles.z % 180 == 0)
+            magnetised = true;
+        else
+            magnetised = false;
+    }
+
+    private void AnimationRotate()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Jump"))
+        {
+            m_Sounds.Play("turnBlip");
+
 
             if (transform.rotation.eulerAngles.z == 0)
                 m_animator.SetTrigger("Rotate180+");
             if (transform.rotation.eulerAngles.z == 180)
                 m_animator.SetTrigger("Rotate180-");
         }
-
     }
 
     private void FixedUpdate()
     {
+
+        //vertical movement calculation
         RaycastHit2D negativeHit = DrawRay(transform, transform.up, Color.red);
         RaycastHit2D positiveHit = DrawRay(transform, transform.up * -1, Color.blue);
 
         yForce = YForce(positiveHit, negativeHit);
 
         float yForceAddition = (Mathf.Abs(yForce) / 2) * xInput;
-        Vector2 direction = new Vector2(xInput * speedMod * m_rigibody.mass + yForceAddition, yForce);
+        float xForceAddition = CheckForWalls();
+
+        Vector2 direction = new Vector2(xForceAddition, yForce);
+
 
         m_rigibody.AddForce(direction);
+
+        //Wall checking
+        float CheckForWalls()
+        {
+            if (rayDebugging)
+                Debug.DrawRay(transform.position, new Vector3(xInput * (transform.localScale.x / 2 + 0.005f), 0, 9), Color.green);
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
+            if (hit)
+                xForceAddition = 0;
+            else
+                return xInput * speedMod * m_rigibody.mass + yForceAddition;
+            return xForceAddition;
+
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Vector2 directionFromPlayer = other.transform.position - transform.position;
-
-        if (!grounded && cam.transform.rotation == Quaternion.Euler(Vector3.zero))
-            cam.DOShakeRotation(0.1f, directionFromPlayer.normalized, 1, 5f, true);
-
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
             grounded = true;
     }
@@ -118,7 +202,7 @@ public class PlayerController : MonoBehaviour
                 a = 0;
 
             float distance = negative.distance;
-            float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
+            float distancePerc = 1f - (distance / magnetLenght) + minMangetForce; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
 
             //preveri če je magnet nad mano ali pod mano, če je and mano potem invertiraj sile
             int aboveMod = 1;
@@ -149,7 +233,7 @@ public class PlayerController : MonoBehaviour
                 a = 0;
 
             float distance = positive.distance;
-            float distancePerc = 1f - (distance / magnetLenght) + aLerpMin; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
+            float distancePerc = 1f - (distance / magnetLenght) + minMangetForce; //returna 0 če je range na max in je na 1 ko smo prakticno zravaven hita 
 
 
             int aboveMod = 1;
