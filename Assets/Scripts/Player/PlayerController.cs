@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool magnetised = false;
     [SerializeField] float speedMod = 5f;
     [SerializeField] [Range(0.01f, 0.5f)] float minMangetForce = 0.1f;
+    float originalGravityScale;
 
     //Rotation lerp values
     [SerializeField] [Range(0.1f, 0.5f)] float rotationTime = 0.5f;
@@ -52,6 +53,8 @@ public class PlayerController : MonoBehaviour
         m_rigibody = GetComponent<Rigidbody2D>();
         m_Sounds = GetComponentInChildren<SoundController>();
 
+        //Original values
+        originalGravityScale = m_rigibody.gravityScale;
 
         //start flipped
         if (startFlipped)
@@ -157,16 +160,13 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
-            grounded = true;
+            StartCoroutine(DelayGroundCheck(0.15f));
     }
-
-
-
 
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
-            grounded = false;
+            StartCoroutine(DelayGroundCheck(0.25f));
     }
 
     //Simulacija magnetnih sil
@@ -235,7 +235,24 @@ public class PlayerController : MonoBehaviour
             yPosForce = Mathf.Lerp(yPosForce, 0, 0.5f);
         #endregion
 
-        return yPosForce + yNegForce; ;
+
+        float sum = yPosForce + yNegForce;
+
+        if (sum <= 0.01f && sum >= -0.01f) //korekcija gravitacije, ko ni magnetnih sil
+        {
+            Debug.Log("Popravljam na 0");
+            if (yPosForce != 0 || yNegForce != 0) //ce smo v freefallu kjer ni magnetnih sil povečamo gravitacijo za to, da ne padamo sto let
+                m_rigibody.gravityScale = 1;
+
+            return 0;
+        }
+        else
+        {
+            m_rigibody.gravityScale = originalGravityScale;
+            return yPosForce + yNegForce;
+        }
+
+
 
     }
 
@@ -245,5 +262,12 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(myTrans.position, direction * magnetLenght, debugColor);
         return Physics2D.Raycast(myTrans.position, direction, magnetLenght, groundLayer);
     }
-
+    IEnumerator DelayGroundCheck(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (grounded)
+            grounded = false;
+        else if (!grounded)
+            grounded = true;
+    }
 }

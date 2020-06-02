@@ -50,10 +50,10 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: wallStick
+    clip: {fileID: 8300000, guid: 70a24a6476c7d5b4b9ff577949e230bf, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
     source: {fileID: 0}
 --- !u!1 &430836010331411359
@@ -4906,6 +4906,7 @@ GameObject:
   - component: {fileID: 430836011405409951}
   - component: {fileID: 1865549902}
   - component: {fileID: 7681324765174084245}
+  - component: {fileID: 430836011319674349}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -5025,6 +5026,8 @@ MonoBehaviour:
   m_SpriteObject: {fileID: 430836011627155128}
   scaleAmount: 0.3
   bopDuration: 0.15
+  bumpShakeMultiplier: 0.15
+  deathScreenShakeStr: 2
 --- !u!60 &7681324765174084245
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -5058,6 +5061,19 @@ PolygonCollider2D:
       - {x: 0.49, y: -0.4}
       - {x: 0.49, y: 0.4}
       - {x: 0.4, y: 0.49}
+--- !u!114 &430836011319674349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430836011405409947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f118651cdec93ae4e92517499d877380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelToLoad: Level6_Optional3
 --- !u!1 &430836011627155129
 GameObject:
   m_ObjectHideFlags: 0

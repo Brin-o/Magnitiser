@@ -47,12 +47,12 @@ public class PlayerJuice : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) //Juice on collision with other magnets
     {
 
-        ScreenShake(other);
+        //ScreenShake(other);
 
         PlayerBop(other);
 
 
-        void ScreenShake(Collision2D col)
+        /*void ScreenShake(Collision2D col)
         {
             Vector2 directionFromPlayer = col.transform.position - transform.position;
             Tween cameraBump = cam.DOShakeRotation(0.15f, directionFromPlayer * 0.15f, 3, 5f, true);
@@ -61,23 +61,26 @@ public class PlayerJuice : MonoBehaviour
                 cameraBump.Play();
             else
                 cam.transform.DORotate(Vector3.zero, 0.1f);
-        }
+        }*/
         void PlayerBop(Collision2D col)
         {
             float myY = transform.position.y;
             float otherY = col.transform.position.y;
 
-            if (scalingOnVel && myY != otherY && col.transform.CompareTag("Positive") || scalingOnVel && myY != otherY && col.transform.CompareTag("Negative"))
+            if (!m_controller.grounded)
             {
-                //TODO
-                //            m_sounds.Play("wallStick");
+                if (scalingOnVel && myY != otherY && col.transform.CompareTag("Positive") || scalingOnVel && myY != otherY && col.transform.CompareTag("Negative"))
+                {
+                    //TODO
+                    m_sounds.Play("wallStick");
 
-                scalingOnVel = false;
+                    scalingOnVel = false;
 
-                Vector2 punchScale = new Vector2(scaleAmount, -scaleAmount);
-                oldScale = m_SpriteObject.transform.localScale;
-                m_SpriteObject.DOPunchScale(punchScale, bopDuration, 2, 0).SetEase(Ease.OutQuad);
+                    Vector2 punchScale = new Vector2(scaleAmount, -scaleAmount);
+                    oldScale = m_SpriteObject.transform.localScale;
+                    m_SpriteObject.DOPunchScale(punchScale, bopDuration, 2, 0).SetEase(Ease.OutQuad);
 
+                }
             }
         }
     }
@@ -120,6 +123,7 @@ public class PlayerJuice : MonoBehaviour
 
     public void DeathScreenshake()
     {
-        cam.DOShakeRotation(0.3f, m_rb.velocity.normalized * deathScreenShakeStr, 5, 10f, true);
+        if (cam.transform.rotation.eulerAngles == Vector3.zero)
+            cam.DOShakeRotation(0.4f, m_rb.velocity.normalized * deathScreenShakeStr, 5, 10f, false);
     }
 }

@@ -585,34 +585,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &810708739 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8808817260645934210, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
-    type: 3}
-  m_PrefabInstance: {fileID: 2079361186}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &810708741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 810708739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 720}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
 --- !u!1 &890944347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1332,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 759499235, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
+      propertyPath: sounds.Array.data[1].name
+      value: wallStick
+      objectReference: {fileID: 0}
+    - target: {fileID: 759499235, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
+      propertyPath: sounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 70a24a6476c7d5b4b9ff577949e230bf, type: 3}
+    - target: {fileID: 759499235, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
+      propertyPath: sounds.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 759499235, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}
+      propertyPath: sounds.Array.data[1].pitch
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 430836011405409947, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
         type: 3}
       propertyPath: m_Name
