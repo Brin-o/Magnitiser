@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-
     void Start()
     {
         m_rigibody = GetComponent<Rigidbody2D>();
@@ -71,7 +70,10 @@ public class PlayerController : MonoBehaviour
 
         LerpRotation();
         DebugInterpolation();
+        grounded = GroundCheck();
+
     }
+
 
     private void LerpRotation()
     {
@@ -173,18 +175,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
-            StartCoroutine(DelayGroundCheck(0.15f));
-    }
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Positive") || other.gameObject.CompareTag("Negative") || other.gameObject.CompareTag("Neutral"))
-            StartCoroutine(DelayGroundCheck(0.25f));
-    }
-
     //Simulacija magnetnih sil
     float YForce(RaycastHit2D positive, RaycastHit2D negative)
     {
@@ -278,14 +268,34 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(myTrans.position, direction * magnetLenght, debugColor);
         return Physics2D.Raycast(myTrans.position, direction, magnetLenght, groundLayer);
     }
-    IEnumerator DelayGroundCheck(float delay)
+
+    public bool GroundCheck()
     {
-        yield return new WaitForSeconds(delay);
-        if (grounded)
-            grounded = false;
-        else if (!grounded)
-            grounded = true;
+        Vector3 _xMod = new Vector2((transform.localScale.x * 0.5f) - 0.01f, 0);
+
+        if (rayDebugging) //debug display of rays
+        {
+            Color groundCheckColor = Color.green;
+            Debug.DrawRay(transform.position - _xMod, transform.up * (transform.localScale.y * 0.5f), groundCheckColor);
+            Debug.DrawRay(transform.position + _xMod, transform.up * (transform.localScale.y * 0.5f), groundCheckColor);
+            Debug.DrawRay(transform.position + _xMod, transform.up * -(transform.localScale.y * 0.5f), groundCheckColor);
+            Debug.DrawRay(transform.position - _xMod, transform.up * -(transform.localScale.y * 0.5f), groundCheckColor);
+
+        }
+
+        float _rayLenght = transform.localScale.y * 0.5f + 0.005f;
+
+        RaycastHit2D leftRayUp = Physics2D.Raycast(transform.position - _xMod, transform.up, _rayLenght, groundLayer);
+        RaycastHit2D rightRayUp = Physics2D.Raycast(transform.position + _xMod, transform.up, _rayLenght, groundLayer);
+        RaycastHit2D leftRayDown = Physics2D.Raycast(transform.position - _xMod, transform.up * -1, _rayLenght, groundLayer);
+        RaycastHit2D rightRayDown = Physics2D.Raycast(transform.position + _xMod, transform.up * -1, _rayLenght, groundLayer);
+
+        if (leftRayDown || leftRayUp || rightRayDown || rightRayUp)
+            return true;
+        else
+            return false;
     }
+
 
     //Debug functions
     void DebugInterpolation()

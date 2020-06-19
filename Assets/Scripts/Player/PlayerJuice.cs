@@ -100,11 +100,13 @@ public class PlayerJuice : MonoBehaviour
             spriteScalingOnVel = true;
 
         scaleModx = Mathf.Abs(m_rb.velocity.x) * scaleStrenght;
+        scaleModx = Mathf.Clamp(scaleModx, 0.75f, 1.25f);
         scaleMody = Mathf.Abs(m_rb.velocity.y) * scaleStrenght;
+        scaleMody = Mathf.Clamp(scaleMody, 0.75f, 1.25f);
+
         if (spriteScalingOnVel)
         {
             Vector3 scaleVector = new Vector3(1 + scaleModx - scaleMody, 1 - scaleModx + scaleMody, 1);
-            //m_SpriteObject.localScale = scaleVector;
             m_SpriteObject.localScale = Vector3.Lerp(m_SpriteObject.localScale, scaleVector, 0.5f);
         }
     }
