@@ -12,7 +12,7 @@ public class PlayerJuice : MonoBehaviour
     PlayerController m_controller;
     Camera cam;
 
-    bool scalingOnVel = true;
+    bool spriteScalingOnVel = true;
 
     float scaleModx = 0;
     float scaleMody = 0;
@@ -69,12 +69,12 @@ public class PlayerJuice : MonoBehaviour
 
             if (!m_controller.grounded)
             {
-                if (scalingOnVel && myY != otherY && col.transform.CompareTag("Positive") || scalingOnVel && myY != otherY && col.transform.CompareTag("Negative"))
+                if (spriteScalingOnVel && myY != otherY && col.transform.CompareTag("Positive") || spriteScalingOnVel && myY != otherY && col.transform.CompareTag("Negative"))
                 {
                     //TODO
                     m_sounds.Play("wallStick");
 
-                    scalingOnVel = false;
+                    spriteScalingOnVel = false;
 
                     Vector2 punchScale = new Vector2(scaleAmount, -scaleAmount);
                     oldScale = m_SpriteObject.transform.localScale;
@@ -96,12 +96,12 @@ public class PlayerJuice : MonoBehaviour
         //Ta script poskbri, da se 
 
         //turn velocity scaling back on if needed
-        if (!scalingOnVel && m_SpriteObject.transform.localScale == oldScale)
-            scalingOnVel = true;
+        if (!spriteScalingOnVel && m_SpriteObject.transform.localScale == oldScale)
+            spriteScalingOnVel = true;
 
         scaleModx = Mathf.Abs(m_rb.velocity.x) * scaleStrenght;
         scaleMody = Mathf.Abs(m_rb.velocity.y) * scaleStrenght;
-        if (scalingOnVel)
+        if (spriteScalingOnVel)
         {
             Vector3 scaleVector = new Vector3(1 + scaleModx - scaleMody, 1 - scaleModx + scaleMody, 1);
             //m_SpriteObject.localScale = scaleVector;

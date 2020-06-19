@@ -6,6 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] bool rayDebugging = true;
+    [SerializeField] SpriteRenderer debugIndicator;
     [Space]
 
     //Input values
@@ -69,6 +70,7 @@ public class PlayerController : MonoBehaviour
         xInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
         LerpRotation();
+        DebugInterpolation();
     }
 
     private void LerpRotation()
@@ -144,11 +146,25 @@ public class PlayerController : MonoBehaviour
         //Wall checking
         float CheckForWalls()
         {
-            if (rayDebugging)
-                Debug.DrawRay(transform.position, new Vector3(xInput * (transform.localScale.x / 2 + 0.005f), 0, 9), Color.green);
+            #region Raycasting //fireja raycaste, ki preverijo za zid. Ce je zid spremeni xForce v 0.
+            Vector3 _ySizeModifier = new Vector3(0, transform.localScale.y * 0.5f, 0) * 0.95f;
+            Vector3 _xSizeModifier = new Vector3(xInput * (transform.localScale.x / 2 + 0.01f), 0, 0);
+            Color xRayDebugColor = Color.yellow;
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
-            if (hit)
+            if (rayDebugging)
+            {
+                Debug.DrawRay(transform.position + _ySizeModifier, _xSizeModifier, xRayDebugColor); //Top Ray
+                Debug.DrawRay(transform.position, _xSizeModifier, xRayDebugColor); //Mid Ray
+                Debug.DrawRay(transform.position - _ySizeModifier, _xSizeModifier, xRayDebugColor); //Top Ray
+            }
+
+            //tripleRay                               
+            RaycastHit2D topRay = Physics2D.Raycast(transform.position + _ySizeModifier, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
+            RaycastHit2D midRay = Physics2D.Raycast(transform.position, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
+            RaycastHit2D botRay = Physics2D.Raycast(transform.position - _ySizeModifier, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
+            #endregion 
+
+            if (topRay || midRay || botRay)
                 xForceAddition = 0;
             else
                 return xInput * speedMod * m_rigibody.mass + yForceAddition;
@@ -270,4 +286,18 @@ public class PlayerController : MonoBehaviour
         else if (!grounded)
             grounded = true;
     }
+
+    //Debug functions
+    void DebugInterpolation()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (interpolateFrom0)
+            { interpolateFrom0 = false; debugIndicator.gameObject.SetActive(false); }
+            else
+            { interpolateFrom0 = true; debugIndicator.gameObject.SetActive(true); }
+        }
+    }
+
+
 }
