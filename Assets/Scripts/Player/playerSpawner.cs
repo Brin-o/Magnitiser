@@ -22,6 +22,17 @@ public class playerSpawner : MonoBehaviour
 
 
         Debug.Log("TODO: Reset pickups");
+        ResetCoins();
 
+    }
+
+    void ResetCoins()
+    {
+        GameObject[] allCoins = GameObject.FindGameObjectsWithTag("Coin");
+
+        for (int i = 0; i < allCoins.Length; i++)
+        {
+            allCoins[i].GetComponent<pickup>().CoinRestart();
+        }
     }
 }

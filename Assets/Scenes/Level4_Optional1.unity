@@ -1047,7 +1047,7 @@ GameObject:
   - component: {fileID: 1218135787}
   m_Layer: 0
   m_Name: Pickup
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1140,6 +1140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  pickedUp: 0
 --- !u!61 &1218135789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1921,6 +1922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b5b5bd9243eef4d8895c5bbde222c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transitionAnimator: {fileID: 0}
+  transitionEngine: {fileID: 0}
 --- !u!4 &1968144635
 Transform:
   m_ObjectHideFlags: 0

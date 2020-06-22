@@ -8,6 +8,7 @@ TagManager:
   - Negative
   - Neutral
   - Spikes
+  - Coin
   layers:
   - Default
   - TransparentFX

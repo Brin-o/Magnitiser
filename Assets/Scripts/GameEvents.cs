@@ -27,7 +27,7 @@ public class GameEvents : MonoBehaviour
         }
     }
 
-    public event Action respawnPlayer;
+    public event Action respawnPlayer; //to je v player spawnerju
     public void RespawnPlayer()
     {
         if (respawnPlayer != null)

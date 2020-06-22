@@ -6,7 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] bool rayDebugging = true;
-    [SerializeField] SpriteRenderer debugIndicator;
+    [SerializeField] SpriteRenderer debugIndicator = null;
     [Space]
 
     //Input values
@@ -117,10 +117,10 @@ public class PlayerController : MonoBehaviour
 
         float perc = currentRotationTime / rotationTime;
 
-        Vector3 newRotation = new Vector3(0f, 0f, LibBrin_Lerp.EaseOut(rotateStart, rotateTarget, perc));
+        float newRotation = LibBrin_Lerp.EaseOut(rotateStart, rotateTarget, perc);
 
 
-        transform.rotation = Quaternion.Euler(newRotation);
+        m_rigibody.rotation = newRotation;
 
         if (transform.rotation.eulerAngles.z % 180 == 0)
             magnetised = true;
@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(transform.position - _ySizeModifier, _xSizeModifier, xRayDebugColor); //Top Ray
             }
 
-            //tripleRay                               
+            //tripleRay
             RaycastHit2D topRay = Physics2D.Raycast(transform.position + _ySizeModifier, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
             RaycastHit2D midRay = Physics2D.Raycast(transform.position, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
             RaycastHit2D botRay = Physics2D.Raycast(transform.position - _ySizeModifier, new Vector2(xInput, 0), (transform.localScale.x / 2 + 0.005f), groundLayer);
@@ -272,26 +272,28 @@ public class PlayerController : MonoBehaviour
     public bool GroundCheck()
     {
         Vector3 _xMod = new Vector2((transform.localScale.x * 0.5f) - 0.01f, 0);
+        float _rayLenght = transform.localScale.y * 0.5f + 0.2f;
 
         if (rayDebugging) //debug display of rays
         {
             Color groundCheckColor = Color.green;
-            Debug.DrawRay(transform.position - _xMod, transform.up * (transform.localScale.y * 0.5f), groundCheckColor);
-            Debug.DrawRay(transform.position + _xMod, transform.up * (transform.localScale.y * 0.5f), groundCheckColor);
-            Debug.DrawRay(transform.position + _xMod, transform.up * -(transform.localScale.y * 0.5f), groundCheckColor);
-            Debug.DrawRay(transform.position - _xMod, transform.up * -(transform.localScale.y * 0.5f), groundCheckColor);
+            Debug.DrawRay(transform.position - _xMod, Vector3.up * _rayLenght, groundCheckColor);
+            Debug.DrawRay(transform.position + _xMod, Vector3.up * _rayLenght, groundCheckColor);
+            Debug.DrawRay(transform.position + _xMod, Vector3.up * -_rayLenght, groundCheckColor);
+            Debug.DrawRay(transform.position - _xMod, Vector3.up * -_rayLenght, groundCheckColor);
 
         }
 
-        float _rayLenght = transform.localScale.y * 0.5f + 0.005f;
 
-        RaycastHit2D leftRayUp = Physics2D.Raycast(transform.position - _xMod, transform.up, _rayLenght, groundLayer);
-        RaycastHit2D rightRayUp = Physics2D.Raycast(transform.position + _xMod, transform.up, _rayLenght, groundLayer);
-        RaycastHit2D leftRayDown = Physics2D.Raycast(transform.position - _xMod, transform.up * -1, _rayLenght, groundLayer);
-        RaycastHit2D rightRayDown = Physics2D.Raycast(transform.position + _xMod, transform.up * -1, _rayLenght, groundLayer);
+
+        RaycastHit2D leftRayUp = Physics2D.Raycast(transform.position - _xMod, Vector3.up, _rayLenght, groundLayer);
+        RaycastHit2D rightRayUp = Physics2D.Raycast(transform.position + _xMod, Vector3.up, _rayLenght, groundLayer);
+        RaycastHit2D leftRayDown = Physics2D.Raycast(transform.position - _xMod, Vector3.up * -1, _rayLenght, groundLayer);
+        RaycastHit2D rightRayDown = Physics2D.Raycast(transform.position + _xMod, Vector3.up * -1, _rayLenght, groundLayer);
 
         if (leftRayDown || leftRayUp || rightRayDown || rightRayUp)
             return true;
+
         else
             return false;
     }
@@ -308,6 +310,4 @@ public class PlayerController : MonoBehaviour
             { interpolateFrom0 = true; debugIndicator.gameObject.SetActive(true); }
         }
     }
-
-
 }
