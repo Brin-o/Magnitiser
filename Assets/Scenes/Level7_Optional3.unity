@@ -1060,7 +1060,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.6627451, g: 0.8196079, b: 0.8705883, a: 0}
+  m_BackGroundColor: {r: 0.27450982, g: 0.6666667, b: 0.78039217, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -2633,6 +2633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  pickedUp: 0
 --- !u!61 &1218135789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3624,6 +3625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b5b5bd9243eef4d8895c5bbde222c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transitionAnimator: {fileID: 0}
+  transitionEngine: {fileID: 0}
 --- !u!4 &1968144635
 Transform:
   m_ObjectHideFlags: 0
@@ -4152,6 +4155,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7358779978596788856, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7358779978596788856, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66bd9f7ba09e9d84eb9a0e6a44b2bb17, type: 3}

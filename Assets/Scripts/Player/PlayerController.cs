@@ -87,10 +87,15 @@ public class PlayerController : MonoBehaviour
             switch (transform.rotation.eulerAngles.z)
             {
                 case 0:
-                    rotateTarget = 180;
+                    if (xInput == 1)
+                        rotateTarget = -180;
+                    else
+                        rotateTarget = 180;
                     break;
 
                 case 180:
+                    if (xInput == 1)
+                        rotateTarget = 360;
                     rotateTarget = 0;
                     break;
 
