@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class finishPoint : MonoBehaviour
 {
+    [SerializeField] bool collectFeedback = false;
     int currentLevel;
     [SerializeField] Animator transitionAnimator = null;
     [SerializeField] GameObject transitionEngine = null;
@@ -20,19 +21,45 @@ public class finishPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            CoinEvaluation();
             transitionAnimator.SetTrigger("start");
         }
     }
 
     public void LoadNextLevel()
     {
-        SceneManager.LoadScene(currentLevel + 1);
+        if (CollectLevelData.instance != null)
+        {
+            CollectLevelData data = CollectLevelData.instance;
+
+            data.GrabLevels();
+            data.GrabNextLvl();
+            data.coinData = CoinEvaluation();
+
+            if (data.currentLevel == "0" || data.prevLevel == "0")
+            {
+                Debug.LogWarning("Don't have all the data needed, going to the next level");
+                SceneManager.LoadScene(currentLevel + 1);
+            }
+
+            else
+            {
+                //loadaj v feedback sceno
+                Debug.LogWarning("Going into feedback scene");
+                SceneManager.LoadScene("Feedback");
+            }
+        }
+        else
+        {
+            Debug.LogError("No data collection object!");
+            SceneManager.LoadScene(currentLevel + 1);
+        }
+        //{ SceneManager.LoadScene(currentLevel + 1); Debug.LogWarning("No feedback collection"); }
     }
 
-    void CoinEvaluation()
+    string CoinEvaluation()
     {
         GameObject[] _allCoins = GameObject.FindGameObjectsWithTag("Coin");
+
         int _maxCoins = _allCoins.Length;
         int _pickedCoins = 0;
 
@@ -41,7 +68,8 @@ public class finishPoint : MonoBehaviour
             if (_allCoins[i].GetComponent<pickup>().pickedUp)
                 _pickedCoins++;
         }
-
-        Debug.Log("Picked up: " + _pickedCoins + "/" + _maxCoins);
+        string result = "Picked up: " + _pickedCoins + "/" + _maxCoins;
+        Debug.Log(result);
+        return result;
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Neutral
   - Spikes
   - Coin
+  - Feedback
   layers:
   - Default
   - TransparentFX

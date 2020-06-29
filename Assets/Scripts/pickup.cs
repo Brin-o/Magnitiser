@@ -8,6 +8,7 @@ public class pickup : MonoBehaviour
     public int id;
     public bool pickedUp = false;
     Vector3 originalScale;
+    AudioSource m_audio;
     private void Start()
     {
         GameEvents.current.onCollectiblePickup += CoinPickedUp;
@@ -20,9 +21,13 @@ public class pickup : MonoBehaviour
         {
             pickedUp = true;
             GameEvents.current.pickups += 1;
+
+            m_audio = GetComponentInChildren<AudioSource>();
+            m_audio.Play();
+
             DOTween.Sequence()
-                .Append(transform.DOPunchScale(Vector3.one * 0.05f, 0.05f, 1, 0))
-                .Append(transform.DOScale(Vector3.zero, 0.2f))
+                .Append(transform.DOPunchScale(Vector3.one * 0.35f, 0.15f, 1, 0))
+                .Append(transform.DOScale(Vector3.zero, 0.05f))
                 ;
             //Invoke("Disable", 0.25f);
         }

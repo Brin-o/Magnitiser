@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b5b5bd9243eef4d8895c5bbde222c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectFeedback: 0
   transitionAnimator: {fileID: 0}
   transitionEngine: {fileID: 0}
 --- !u!1 &2914490775118832180
@@ -302,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b5b5bd9243eef4d8895c5bbde222c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectFeedback: 1
   transitionAnimator: {fileID: 2914490774993058540}
   transitionEngine: {fileID: 2914490775118832180}
 --- !u!212 &2914490776231040958

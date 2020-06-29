@@ -6,18 +6,16 @@ using UnityEngine;
 
 public class PlayerJuice : MonoBehaviour
 {
-
+    //references
     SoundController m_sounds;
     Rigidbody2D m_rb;
     PlayerController m_controller;
     Camera cam;
 
+    //scaling seetings
     bool spriteScalingOnVel = true;
-
     float scaleModx = 0;
     float scaleMody = 0;
-
-
     [Header("Velocity Scale Settings")]
     [SerializeField] float scaleStrenght = 0.1f;
 
@@ -26,11 +24,19 @@ public class PlayerJuice : MonoBehaviour
     [SerializeField] Transform m_SpriteObject = default;
     [SerializeField] [Range(0.2f, 1f)] float scaleAmount = 0.1f;
     [SerializeField] [Range(0.1f, 1f)] float bopDuration = 0.1f;
+    const float bumpGraceTime = 0.2f;
+    bool bumpGrace = false;
 
     [Header("Screen shakes")]
-    //[SerializeField] float bumpShakeMultiplier = 0.15f;
     [SerializeField] float deathScreenShakeStr = 2f;
     Vector3 oldScale = Vector3.one;
+    bool isRotating()
+    {
+        if (transform.rotation.eulerAngles.z == 180 || transform.rotation.eulerAngles.z == 0)
+            return false;
+        else
+            return true;
+    }
     private void Start()
     {
         m_sounds = GetComponentInChildren<SoundController>();
@@ -51,8 +57,9 @@ public class PlayerJuice : MonoBehaviour
 
         void PlayerBop(Collision2D col)
         {
+            bool rotating = isRotating();
 
-            if (m_controller.grounded)
+            if (m_controller.grounded && !rotating && !bumpGrace)
             {
                 m_sounds.Play("wallStick");
 
@@ -63,6 +70,8 @@ public class PlayerJuice : MonoBehaviour
                 m_SpriteObject.DOPunchScale(punchScale, bopDuration, 2, 0).SetEase(Ease.OutQuad);
                 StartCoroutine(TurnOnScaling(bopDuration));
             }
+            else if (m_controller.grounded && !rotating && bumpGrace)
+                Debug.Log("Bump grace time is not over");
         }
     }
     IEnumerator TurnOnScaling(float time)
@@ -70,7 +79,12 @@ public class PlayerJuice : MonoBehaviour
         yield return new WaitForSeconds(time);
         spriteScalingOnVel = true;
     }
-
+    IEnumerator BumpGracePeriod()
+    {
+        bumpGrace = true;
+        yield return new WaitForSeconds(bumpGraceTime);
+        bumpGrace = false;
+    }
     private void Update()
     {
         ScaleBasedOnVelocity();
@@ -111,4 +125,5 @@ public class PlayerJuice : MonoBehaviour
         if (cam.transform.rotation.eulerAngles == Vector3.zero)
             cam.DOShakeRotation(0.4f, m_rb.velocity.normalized * deathScreenShakeStr, 5, 10f, false);
     }
+
 }

@@ -276,7 +276,7 @@ public class PlayerController : MonoBehaviour
 
     public bool GroundCheck()
     {
-        Vector3 _xMod = new Vector2((transform.localScale.x * 0.5f) - 0.01f, 0);
+        Vector3 _xMod = new Vector2((transform.localScale.x * 0.5f) - 0.15f, 0);
         float _rayLenght = transform.localScale.y * 0.5f + 0.2f;
 
         if (rayDebugging) //debug display of rays

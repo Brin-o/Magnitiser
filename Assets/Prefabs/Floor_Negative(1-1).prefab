@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!70 &922055575371953019
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2232784283550362061}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
-  m_Direction: 1
 --- !u!1001 &910164365885002913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23,20 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1323491847658765674, guid: dda81966a8af292499cf74f946f3d291,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1323491847658765675, guid: dda81966a8af292499cf74f946f3d291,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 1323491847658765675, guid: dda81966a8af292499cf74f946f3d291,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1323491847658765675, guid: dda81966a8af292499cf74f946f3d291,
         type: 3}
@@ -83,11 +62,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1323491847658765675, guid: dda81966a8af292499cf74f946f3d291,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1323491847658765676, guid: dda81966a8af292499cf74f946f3d291,
         type: 3}
       propertyPath: m_Name
@@ -95,9 +69,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dda81966a8af292499cf74f946f3d291, type: 3}
---- !u!1 &2232784283550362061 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1323491847658765676, guid: dda81966a8af292499cf74f946f3d291,
-    type: 3}
-  m_PrefabInstance: {fileID: 910164365885002913}
-  m_PrefabAsset: {fileID: 0}
