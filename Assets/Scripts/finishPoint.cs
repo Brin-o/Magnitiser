@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class finishPoint : MonoBehaviour
 {
-    [SerializeField] bool collectFeedback = false;
     int currentLevel;
     [SerializeField] Animator transitionAnimator = null;
     [SerializeField] GameObject transitionEngine = null;
@@ -50,7 +49,7 @@ public class finishPoint : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No data collection object!");
+            Debug.LogWarning("No data collection object!");
             SceneManager.LoadScene(currentLevel + 1);
         }
         //{ SceneManager.LoadScene(currentLevel + 1); Debug.LogWarning("No feedback collection"); }

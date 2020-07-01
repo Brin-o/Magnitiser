@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+
 
 public class SendDataToForm : MonoBehaviour
 {
@@ -62,16 +64,24 @@ public class SendDataToForm : MonoBehaviour
 
     IEnumerator Post(string result)
     {
-        WWWForm form = new WWWForm();
+        WWWForm _form = new WWWForm();
 
-        form.AddField("entry.60705062", levelsToEvaluate);
-        form.AddField("entry.1653144443", result);
-        form.AddField("entry.856417234", deathsNum);
-        form.AddField("entry.1907840995", coinData);
+        _form.AddField("entry.60705062", levelsToEvaluate);
+        _form.AddField("entry.1653144443", result);
+        _form.AddField("entry.856417234", deathsNum);
+        _form.AddField("entry.1907840995", coinData);
 
-        byte[] rawData = form.data;
-        WWW www = new WWW(BASE_URL, rawData);
-        yield return www;
+        UnityWebRequest www = UnityWebRequest.Post(BASE_URL, _form);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log("Feedback upload completed.");
+        }
     }
 
     void LoadNextLvl()

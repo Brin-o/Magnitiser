@@ -49,7 +49,6 @@ public class PlayerJuice : MonoBehaviour
 
     }
 
-
     private void OnCollisionEnter2D(Collision2D other) //Juice on collision with other magnets
     {
 
@@ -111,13 +110,17 @@ public class PlayerJuice : MonoBehaviour
     void AdjustPositionForSquish()
     {
         //Ta skript poskbri, da je positiononing karakterja nomralen po tem, ko ga ScaleBasedOnVelocity scala
-        float yMod = 1 - m_SpriteObject.localScale.y;
+        //float yMod = 1 - (m_SpriteObject.localScale.y * 1.01f);
+        float yMod = 1 - (m_SpriteObject.localScale.y);
 
         if (m_controller.yForce <= 0 && Mathf.Abs(m_rb.transform.rotation.eulerAngles.z) == 180 || m_controller.yForce > 0 && Mathf.Abs(m_rb.transform.rotation.eulerAngles.z) != 180)
             yMod = -yMod;
 
         Vector3 adjustedPosition = new Vector3(0, -yMod, 0);
-        m_SpriteObject.localPosition = adjustedPosition;
+
+        m_SpriteObject.localPosition = Vector3.Lerp(m_SpriteObject.localPosition, adjustedPosition, 0.5f);
+
+        //m_SpriteObject.localPosition = adjustedPosition;
     }
 
     public void DeathScreenshake()

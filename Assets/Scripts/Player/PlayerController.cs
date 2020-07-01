@@ -251,7 +251,6 @@ public class PlayerController : MonoBehaviour
 
         if (sum <= 0.01f && sum >= -0.01f) //korekcija gravitacije, ko ni magnetnih sil
         {
-            Debug.Log("Popravljam na 0");
             if (yPosForce != 0 || yNegForce != 0) //ce smo v freefallu kjer ni magnetnih sil povečamo gravitacijo za to, da ne padamo sto let
                 m_rigibody.gravityScale = 1;
 
@@ -277,7 +276,8 @@ public class PlayerController : MonoBehaviour
     public bool GroundCheck()
     {
         Vector3 _xMod = new Vector2((transform.localScale.x * 0.5f) - 0.15f, 0);
-        float _rayLenght = transform.localScale.y * 0.5f + 0.2f;
+        float _yOffset = 0.35f;
+        float _rayLenght = transform.localScale.y * 0.5f + _yOffset;
 
         if (rayDebugging) //debug display of rays
         {
