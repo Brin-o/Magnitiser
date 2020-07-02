@@ -8,8 +8,8 @@ public class SpeedrunMenu : MonoBehaviour
 {
     [SerializeField] InputField m_input = null;
     [SerializeField] GameObject speedrunPrefab = null;
-    [SerializeField] Transform inputField;
-    [SerializeField] M_Manager menuManager;
+    [SerializeField] Transform inputField = null;
+    [SerializeField] M_Manager menuManager = null;
     string username = "";
 
     public void InitiateSpeedrun()

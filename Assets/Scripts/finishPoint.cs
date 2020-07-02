@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Ludiq;
+using Bolt;
 
 public class finishPoint : MonoBehaviour
 {
@@ -20,6 +22,7 @@ public class finishPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<PlayerController>().active = false;
             transitionAnimator.SetTrigger("start");
         }
     }
@@ -70,5 +73,11 @@ public class finishPoint : MonoBehaviour
         string result = "Picked up: " + _pickedCoins + "/" + _maxCoins;
         Debug.Log(result);
         return result;
+    }
+
+    void SendData()//Sends data to the carrier
+    {
+        GameObject carrier = GameObject.FindGameObjectWithTag("Data");
+        
     }
 }

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speedMod = 5f;
     [SerializeField] [Range(0.01f, 0.5f)] float minMangetForce = 0.1f;
     float originalGravityScale;
+    [HideInInspector] public bool active = false;
 
     //Rotation lerp values
     [SerializeField] [Range(0.1f, 0.5f)] float rotationTime = 0.5f;
@@ -62,13 +63,23 @@ public class PlayerController : MonoBehaviour
 
         rotateStart = transform.localRotation.eulerAngles.z;
         rotateTarget = transform.localRotation.eulerAngles.z;
+
+        Invoke("ActivatePlayer", 0.35f);
+    }
+
+    void ActivatePlayer()
+    {
+        active = true;
     }
 
     void Update() //Player controlls
     {
-        xInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+        if (active)
+        {
+            xInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+            LerpRotation();
+        }
 
-        LerpRotation();
         DebugInterpolation();
         grounded = GroundCheck();
 

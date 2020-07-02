@@ -150,8 +150,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 13.319999}
-  m_SizeDelta: {x: 0, y: 68.86871}
+  m_AnchoredPosition: {x: 0, y: 35.2}
+  m_SizeDelta: {x: 0, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &240453213
 MonoBehaviour:
@@ -631,7 +631,7 @@ MonoBehaviour:
   speedrunPrefab: {fileID: 6382012932290520434, guid: bdbd842127d99494cad30c6fe4bc44c3,
     type: 3}
   inputField: {fileID: 799155900}
-  menuManager: {fileID: 0}
+  menuManager: {fileID: 1840747063}
 --- !u!1 &591086891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2127,8 +2127,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 86.399994}
-  m_SizeDelta: {x: 0, y: 68.86871}
+  m_AnchoredPosition: {x: 0, y: 93.4}
+  m_SizeDelta: {x: 0, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1505331387
 MonoBehaviour:
