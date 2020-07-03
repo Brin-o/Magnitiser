@@ -79,7 +79,7 @@ public class PlayerJuice : MonoBehaviour
         yield return new WaitForSeconds(time);
         spriteScalingOnVel = true;
     }
-    IEnumerator BumpGracePeriod()
+    public IEnumerator BumpGracePeriod()
     {
         bumpGrace = true;
         yield return new WaitForSeconds(bumpGraceTime);

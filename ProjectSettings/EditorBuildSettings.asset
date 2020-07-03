@@ -9,25 +9,31 @@ EditorBuildSettings:
     path: Assets/Scenes/Completed/Menu.unity
     guid: cbdbda73b2cffe14c81e5d7adb77c239
   - enabled: 1
-    path: Assets/Scenes/Completed/0. Intro/0. Intro1 - Basics.unity
+    path: Assets/Scenes/Completed/0. Intro/0. Intro1 - BasicMovement.unity
+    guid: 086e1a01288456542bcc713f705c450e
+  - enabled: 1
+    path: Assets/Scenes/Completed/0. Intro/0. Intro2 - FirstSpike.unity
+    guid: b1f85975164d7b84e83efe4196962112
+  - enabled: 1
+    path: Assets/Scenes/Completed/0. Intro/0. Intro3 - AdvancedMovement.unity
     guid: b9325100ec9a95641929ff9f943c2104
   - enabled: 1
-    path: Assets/Scenes/Completed/0. Intro/0. Intro2 - Movement.unity
+    path: Assets/Scenes/Completed/0. Intro/0. Intro4 - Coins.unity
+    guid: 45aa05cf734ad2940b34800fb625cfbc
+  - enabled: 1
+    path: Assets/Scenes/Completed/1. Easy/1. Easy1 - FloatyMovement.unity
     guid: 73a05ac323eb3114a898e116d26b0fd0
   - enabled: 1
-    path: Assets/Scenes/Completed/1. Easy/1. Easy - Generic.unity
+    path: Assets/Scenes/Completed/1. Easy/1. Easy3 - Just a room.unity
     guid: d4df6021a1bb69247aefef05702ff524
-  - enabled: 1
-    path: Assets/Scenes/Completed/1. Easy/2. Easy - Coin 1.unity
-    guid: 45aa05cf734ad2940b34800fb625cfbc
   - enabled: 1
     path: Assets/Scenes/Completed/2. Medium/2. Medium - Shark Teeth.unity
     guid: 1e204371e0287ee45ad89eb7f1587419
   - enabled: 1
-    path: Assets/Scenes/Completed/3. Hard/3. Hard1 - Shark Teeth 2.unity
+    path: Assets/Scenes/Completed/2. Medium/2. Medium - Shark Teeth 2.unity
     guid: 536310d3bba6d694d83772d0aad2507b
   - enabled: 1
-    path: Assets/Scenes/Completed/3. Hard/3. Hard2 - Generic.unity
+    path: Assets/Scenes/Completed/3. Hard/3. Hard1 - Generic.unity
     guid: 2de3337748326f266babe833754aaf07
   - enabled: 1
     path: Assets/Scenes/Completed/3. Hard/3. Hard3 - Jumper.unity
