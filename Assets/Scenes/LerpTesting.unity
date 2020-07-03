@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 264802912}
   - component: {fileID: 264802911}
   - component: {fileID: 264802910}
+  - component: {fileID: 264802913}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
@@ -137,14 +138,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 264802909}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3397cb4224c39c048b470ec752fa949e, type: 3}
+  m_Script: {fileID: 11500000, guid: b9ee275971e14684390eb47a362edcb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpTime: 3
-  currentLerpTime: 0
-  moveDistance: 10
+  associatedSheet: 19xpmX-VBPAMhxbAsU_FhWAQwbS_Ra0cMqzAov1VA1OI
+  associatedWorksheet: Form Responses 1
 --- !u!212 &264802911
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -207,6 +207,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &264802913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264802909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9ee275971e14684390eb47a362edcb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  associatedSheet: 19xpmX-VBPAMhxbAsU_FhWAQwbS_Ra0cMqzAov1VA1OI
+  associatedWorksheet: Form Responses 1
 --- !u!1 &268727232
 GameObject:
   m_ObjectHideFlags: 0
