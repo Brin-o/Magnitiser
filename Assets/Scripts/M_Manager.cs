@@ -14,22 +14,13 @@ public class M_Manager : MonoBehaviour
 
     [Header("Modules")]
     [SerializeField] Transform module_speedrun = null;
-    [SerializeField] Transform module_lvls = null;
-
     [Header("Buttons")]
     [SerializeField] Transform itchButton = null;
     [SerializeField] Transform blogButton = null;
 
     public void SpeedrunActivate()
     {
-        ReturnModule(module_lvls);
         GrabModule(module_speedrun);
-    }
-
-    public void LvlSelectActivate()
-    {
-        ReturnModule(module_speedrun);
-        GrabModule(module_lvls);
     }
 
     public void StartGame()

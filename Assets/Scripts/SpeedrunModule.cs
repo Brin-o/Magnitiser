@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System;
 using UnityEngine.Networking;
+using TMPro;
 
 public class SpeedrunModule : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class SpeedrunModule : MonoBehaviour
 
     public string username = "Dflt";
     [SerializeField] private string BASE_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScw0iVac8RriGbTnnyXlQBI1BccNs2uxagiZ3HIr9U58G4fwA/formResponse";
+
+    [SerializeField] TextMeshProUGUI m_text = null, m_textShadow = null;
 
 
     #region  Singleton
@@ -54,6 +57,10 @@ public class SpeedrunModule : MonoBehaviour
         TimeSpan _time = TimeSpan.FromSeconds(timer);
 
         timerString = string.Format("{0:D2}:{1:D2}.{2:D1}", _time.Minutes, _time.Seconds, _time.Milliseconds);
+
+        if (SceneManager.GetActiveScene().name != "Menu")
+        { m_text.text = timerString; m_textShadow.text = timerString; }
+
     }
 
     private void ActivateTimer()
