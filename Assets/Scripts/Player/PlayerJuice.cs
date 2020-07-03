@@ -30,6 +30,7 @@ public class PlayerJuice : MonoBehaviour
     [Header("Screen shakes")]
     [SerializeField] float deathScreenShakeStr = 2f;
     Vector3 oldScale = Vector3.one;
+
     bool isRotating()
     {
         if (transform.rotation.eulerAngles.z == 180 || transform.rotation.eulerAngles.z == 0)
@@ -69,7 +70,7 @@ public class PlayerJuice : MonoBehaviour
                 m_SpriteObject.DOPunchScale(punchScale, bopDuration, 2, 0).SetEase(Ease.OutQuad);
                 StartCoroutine(TurnOnScaling(bopDuration));
             }
-            else if (m_controller.grounded && !rotating && bumpGrace)
+            else if (m_controller.grounded && !rotating && bumpGrace && m_controller.active)
                 Debug.Log("Bump grace time is not over");
         }
     }
@@ -88,6 +89,8 @@ public class PlayerJuice : MonoBehaviour
     {
         ScaleBasedOnVelocity();
         AdjustPositionForSquish();
+
+        //EmotionMover();
     }
 
     private void ScaleBasedOnVelocity()
@@ -127,6 +130,8 @@ public class PlayerJuice : MonoBehaviour
     {
         if (cam.transform.rotation.eulerAngles == Vector3.zero)
             cam.DOShakeRotation(0.4f, m_rb.velocity.normalized * deathScreenShakeStr, 5, 10f, false);
+        transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce);
+        m_controller.active = false;
     }
 
 }

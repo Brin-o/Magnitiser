@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Audio;
+using DG.Tweening;
 
 public class SoundController : MonoBehaviour
 {
@@ -45,4 +46,6 @@ public class SoundController : MonoBehaviour
         else
             s.source.Stop();
     }
+
+
 }

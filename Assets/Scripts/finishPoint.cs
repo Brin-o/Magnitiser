@@ -52,10 +52,10 @@ public class finishPoint : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No data collection object!");
+            CoinEvaluation();
+            Debug.LogWarning("No feedback collection object!");
             SceneManager.LoadScene(currentLevel + 1);
         }
-        //{ SceneManager.LoadScene(currentLevel + 1); Debug.LogWarning("No feedback collection"); }
     }
 
     string CoinEvaluation()
@@ -72,12 +72,15 @@ public class finishPoint : MonoBehaviour
         }
         string result = "Picked up: " + _pickedCoins + "/" + _maxCoins;
         Debug.Log(result);
+
+        SendData(_pickedCoins);
+
         return result;
     }
 
-    void SendData()//Sends data to the carrier
+    void SendData(int coins)//Sends data to the carrier
     {
         GameObject carrier = GameObject.FindGameObjectWithTag("Data");
-        
+        CustomEvent.Trigger(carrier, "addCollectedCoin", coins);
     }
 }
