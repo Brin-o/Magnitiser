@@ -12,6 +12,7 @@ public class PickupTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameEvents.current.CollectibePickedUp(id);
+            other.GetComponent<PlayerJuice>().BumpGracePeriod();
         }
     }
 }

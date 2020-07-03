@@ -47,5 +47,23 @@ public class SoundController : MonoBehaviour
             s.source.Stop();
     }
 
+    public void PlayVaried(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+            Debug.LogError("Unable to find a sound with the name " + name + " on the gameobject " + gameObject.name);
 
+        else if (s.source.isPlaying)
+        {
+            s.source.Stop();
+            float rngRange = UnityEngine.Random.Range(0.5f, 1.5f);
+            s.pitch = rngRange;
+            s.source.Play();
+        }
+
+        else
+            s.source.Play();
+
+
+    }
 }

@@ -16,7 +16,7 @@ public class M_HeartDisplay : MonoBehaviour
 
     void Start()
     {
-        coinsCollected = (int)Variables.Saved.Get("collectedCoins");
+        coinsCollected = (float)Variables.Saved.Get("collectedCoins");
 
         m_text.text = coinsCollected + "/" + maxCoins;
 
