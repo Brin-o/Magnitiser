@@ -6,7 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] bool rayDebugging = true;
-    [SerializeField] SpriteRenderer debugIndicator = null;
+    [SerializeField] GameObject pauseScreen = null;
     [Space]
 
     //Input values
@@ -80,8 +80,18 @@ public class PlayerController : MonoBehaviour
             LerpRotation();
         }
 
-        DebugInterpolation();
         grounded = GroundCheck();
+        PauseCheck();
+    }
+
+    void PauseCheck()
+    {
+        //aktivira pause screen - ce je ta ze active poklice njegovo resume
+        if (Input.GetKeyDown(KeyCode.Escape))
+            if (pauseScreen.activeSelf)
+                pauseScreen.GetComponent<M_Pause>().Resume();
+            else
+                pauseScreen.SetActive(true);
 
     }
 
@@ -315,15 +325,4 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    //Debug functions
-    void DebugInterpolation()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (interpolateFrom0)
-            { interpolateFrom0 = false; debugIndicator.gameObject.SetActive(false); }
-            else
-            { interpolateFrom0 = true; debugIndicator.gameObject.SetActive(true); }
-        }
-    }
 }

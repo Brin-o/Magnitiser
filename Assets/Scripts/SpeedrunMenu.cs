@@ -28,7 +28,10 @@ public class SpeedrunMenu : MonoBehaviour
 
             _srModule.username = username;
 
-            menuManager.StartGame();
+            if (NormalModule.instance != null)
+                Destroy(NormalModule.instance.gameObject);
+
+            menuManager.StartGame(false);
         }
 
 

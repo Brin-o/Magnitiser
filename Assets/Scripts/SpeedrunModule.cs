@@ -7,6 +7,8 @@ using System.Linq;
 using System;
 using UnityEngine.Networking;
 using TMPro;
+using Ludiq;
+using Bolt;
 
 public class SpeedrunModule : MonoBehaviour
 {
@@ -32,19 +34,25 @@ public class SpeedrunModule : MonoBehaviour
         if (instance == null)
         { instance = this; DontDestroyOnLoad(this.gameObject); }
         else
-            Destroy(this.gameObject);
+        { Destroy(SpeedrunModule.instance.gameObject); instance = this; DontDestroyOnLoad(this.gameObject); }
     }
     #endregion
 
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        if (NormalModule.instance != null)
+            NormalModule.instance.gameObject.SetActive(false);
     }
 
     void OnSceneLoaded(Scene _scene, LoadSceneMode _mode)
     {
         if (_scene.name == "End")
-            SendData();
+        { SendData(); timerString = ""; }
+
+        else if (_scene.name == "Menu")
+            instance.gameObject.SetActive(false);
+
     }
 
 
@@ -52,11 +60,14 @@ public class SpeedrunModule : MonoBehaviour
     {
         ActivateTimer();
         if (active)
+        {
             timer += Time.deltaTime;
 
-        TimeSpan _time = TimeSpan.FromSeconds(timer);
+            TimeSpan _time = TimeSpan.FromSeconds(timer);
 
-        timerString = string.Format("{0:D2}:{1:D2}.{2:D1}", _time.Minutes, _time.Seconds, _time.Milliseconds);
+            timerString = string.Format("{0:D2}:{1:D2}.{2:D1}", _time.Minutes, _time.Seconds, _time.Milliseconds);
+        }
+
 
         if (SceneManager.GetActiveScene().name != "Menu")
         { m_text.text = timerString; m_textShadow.text = timerString; }
@@ -73,10 +84,8 @@ public class SpeedrunModule : MonoBehaviour
 
             if (_curScene == "Menu") //preveri če si v meniju
                 timer = 0;
-
-            if (_curScene == "Win")
-                SendData();
         }
+
         else
             active = true;
     }
@@ -87,8 +96,18 @@ public class SpeedrunModule : MonoBehaviour
 
     void SendData()
     {
+
+        //local highscore
+        if ((double)timer < (double)Variables.Saved.Get("bestTime"))
+        {
+            Variables.Saved.Set("bestTime", timer);
+            Variables.Saved.Set("bestTimeString", timerString);
+        }
+
+        //send to net
         StartCoroutine(SendHighscore());
 
+        //reset
         timer = 0;
         username = "Dflt";
     }

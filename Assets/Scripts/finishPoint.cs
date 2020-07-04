@@ -37,23 +37,6 @@ public class finishPoint : MonoBehaviour
             data.GrabNextLvl();
             data.coinData = CoinEvaluation();
 
-            if (data.currentLevel == "0" || data.prevLevel == "0")
-            {
-                Debug.LogWarning("Don't have all the data needed, going to the next level");
-                SceneManager.LoadScene(currentLevel + 1);
-            }
-
-            else
-            {
-                //loadaj v feedback sceno
-                Debug.LogWarning("Going into feedback scene");
-                SceneManager.LoadScene("Feedback");
-            }
-        }
-        else
-        {
-            CoinEvaluation();
-            Debug.LogWarning("No feedback collection object!");
             SceneManager.LoadScene(currentLevel + 1);
         }
     }

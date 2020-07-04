@@ -20,8 +20,6 @@ public class playerSpawner : MonoBehaviour
         if (flipped)
             player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
 
-
-        Debug.Log("TODO: Reset pickups");
         ResetCoins();
 
     }

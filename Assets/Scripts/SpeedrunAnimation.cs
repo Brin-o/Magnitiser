@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class SpeedrunAnimation : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class SpeedrunAnimation : MonoBehaviour
 
     private void Start()
     {
+        timer.GetComponent<TextMeshProUGUI>().text = SpeedrunModule.instance.timerString;
         Vector3 timerPos = timer.position;
         timer.position = timerAnchor.position;
         timer.DOMove(timerPos, 0.75f);

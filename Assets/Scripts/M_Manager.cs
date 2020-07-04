@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class M_Manager : MonoBehaviour
 {
+    [SerializeField] GameObject normalModul = null;
     [Range(0.25f, 1f)] [SerializeField] float inTimer = 0.3f;
     [SerializeField] Transform anchorActive = null;
     [SerializeField] Transform anchorInactive = null;
@@ -23,10 +24,12 @@ public class M_Manager : MonoBehaviour
         GrabModule(module_speedrun);
     }
 
-    public void StartGame()
+    public void StartGame(bool normal)
     {
         blackout.DOMove(Vector3.zero, 0.4f, false);
         Invoke("LoadLevel", 0.45f);
+        if (true)
+            Instantiate(normalModul);
     }
 
     void LoadLevel()
@@ -44,6 +47,10 @@ public class M_Manager : MonoBehaviour
     {
         Application.OpenURL("https://brin.design/");
         BopButton(blogButton);
+    }
+    public void OpenHighScores()
+    {
+        Application.OpenURL("https://docs.google.com/spreadsheets/d/19xpmX-VBPAMhxbAsU_FhWAQwbS_Ra0cMqzAov1VA1OI/edit?usp=sharing");
     }
 
     void BopButton(Transform btn)
