@@ -12,10 +12,18 @@ public class M_Music : MonoBehaviour
     [SerializeField] AudioSource songNormal = null;
     [SerializeField] AudioSource songSpeed = null;
     bool inGame = false;
+
+    #region  Singleton
+    public static M_Music instance;
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (instance == null)
+        { instance = this; DontDestroyOnLoad(this.gameObject); }
+        else
+        { Destroy(this.gameObject); }
     }
+    #endregion
+
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;

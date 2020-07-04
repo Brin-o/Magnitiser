@@ -50,9 +50,6 @@ public class SpeedrunModule : MonoBehaviour
         if (_scene.name == "End")
         { SendData(); timerString = ""; }
 
-        else if (_scene.name == "Menu")
-            instance.gameObject.SetActive(false);
-
     }
 
 

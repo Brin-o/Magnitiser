@@ -30,11 +30,10 @@ public class NormalModule : MonoBehaviour
     void OnSceneLoaded(Scene _scene, LoadSceneMode _mode)
     {
         if (_scene.name == "End" || _scene.name == "Menu")
-        { levelName = ""; instance.gameObject.SetActive(false); }
+            levelName = "";
         else
         {
             levelName = _scene.name;
-            instance.gameObject.SetActive(true);
         }
     }
     private void Update()

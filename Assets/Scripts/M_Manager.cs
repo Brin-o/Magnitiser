@@ -19,6 +19,16 @@ public class M_Manager : MonoBehaviour
     [SerializeField] Transform itchButton = null;
     [SerializeField] Transform blogButton = null;
 
+
+    private void Start()
+    {
+        //destroy modules if they exist
+        if (SpeedrunModule.instance != null)
+            Destroy(SpeedrunModule.instance.gameObject);
+        if (NormalModule.instance != null)
+            Destroy(NormalModule.instance.gameObject);
+    }
+
     public void SpeedrunActivate()
     {
         GrabModule(module_speedrun);
@@ -28,7 +38,7 @@ public class M_Manager : MonoBehaviour
     {
         blackout.DOMove(Vector3.zero, 0.4f, false);
         Invoke("LoadLevel", 0.45f);
-        if (true)
+        if (normal == true)
             Instantiate(normalModul);
     }
 

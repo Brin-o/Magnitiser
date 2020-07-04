@@ -22,14 +22,14 @@ public class SpeedrunMenu : MonoBehaviour
 
         else
         {
+            if (NormalModule.instance != null)
+                Destroy(NormalModule.instance.gameObject);
+
             menuSounds.PlayVaried("clickNormal");
             GameObject _module = Instantiate(speedrunPrefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
             SpeedrunModule _srModule = _module.GetComponent<SpeedrunModule>();
 
             _srModule.username = username;
-
-            if (NormalModule.instance != null)
-                Destroy(NormalModule.instance.gameObject);
 
             menuManager.StartGame(false);
         }
