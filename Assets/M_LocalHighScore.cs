@@ -9,6 +9,6 @@ public class M_LocalHighScore : MonoBehaviour
 
     void Start()
     {
-        GetComponent<TextMeshProUGUI>().text = "Leaderboards (Your best: " + Variables.Saved.Get("bestTimeString") + " )";
+        GetComponent<TextMeshProUGUI>().text = "Global Leaderboards (Your best: " + Variables.Saved.Get("bestTimeString") + " )";
     }
 }
