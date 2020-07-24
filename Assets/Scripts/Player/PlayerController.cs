@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     //Input values
     float xInput;
 
-
-
     [Header("Character stats")]
     public bool startFlipped = false;
     [SerializeField] bool magnetised = false;
