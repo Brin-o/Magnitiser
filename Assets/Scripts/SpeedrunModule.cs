@@ -94,6 +94,9 @@ public class SpeedrunModule : MonoBehaviour
     void SendData()
     {
 
+        //send to Newgrounds
+        NG_Helper.instance.NGSubmitScore(9172, (int)timer);
+
         //local highscore
         if ((double)timer < (double)Variables.Saved.Get("bestTime"))
         {
@@ -108,7 +111,6 @@ public class SpeedrunModule : MonoBehaviour
         timer = 0;
         username = "Dflt";
     }
-
     IEnumerator SendHighscore()
     {
         WWWForm _form = new WWWForm();
