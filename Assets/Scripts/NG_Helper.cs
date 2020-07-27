@@ -7,6 +7,11 @@ public class NG_Helper : MonoBehaviour
     public io.newgrounds.core ngio_core;
     bool loggedIn;
 
+    public static int medalNormal = 59980;
+    public static int medalHeart = 59983;
+    public static int medal2min = 59981;
+    public static int mdeal1min = 59982;
+
     //singleton
     public static NG_Helper instance;
     void Awake()
@@ -27,7 +32,7 @@ public class NG_Helper : MonoBehaviour
             }
             else
             {
-                Debug.Log("Player logged in");
+                requestLogin();
             }
         });
     }
@@ -36,6 +41,10 @@ public class NG_Helper : MonoBehaviour
     {
         io.newgrounds.objects.user player = ngio_core.current_user;
         loggedIn = true;
+    }
+    void requestLogin()
+    {
+        //ngio_core.requestLogin(onLoggedIn, onLoginFailed, onLoginCancelled)
     }
 
     public void NGunlockMedal(int medal_id)

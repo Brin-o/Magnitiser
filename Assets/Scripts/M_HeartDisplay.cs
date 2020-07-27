@@ -21,7 +21,11 @@ public class M_HeartDisplay : MonoBehaviour
         m_text.text = coinsCollected + "/" + maxCoins;
 
         if (coinsCollected == maxCoins)
+        {
             GetComponentInChildren<Image>().color = winColor;
+            NG_Helper.instance.NGunlockMedal(NG_Helper.medalHeart);
+        }
+
     }
 
 }

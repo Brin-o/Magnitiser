@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     private void LerpRotation()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || CrossPlatformInputManager.GetButtonDown("Jump"))
         {
 
             currentRotationTime = 0f;

@@ -58,6 +58,11 @@ public class M_Manager : MonoBehaviour
         Application.OpenURL("https://brin.design/");
         BopButton(blogButton);
     }
+    public void OpenTwitter()
+    {
+        Application.OpenURL("https://twitter.com/Brin_Design");
+        BopButton(blogButton);
+    }
     public void OpenHighScores()
     {
         Application.OpenURL("https://docs.google.com/spreadsheets/d/19xpmX-VBPAMhxbAsU_FhWAQwbS_Ra0cMqzAov1VA1OI/edit?usp=sharing");

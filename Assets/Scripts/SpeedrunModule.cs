@@ -95,7 +95,7 @@ public class SpeedrunModule : MonoBehaviour
     {
 
         //send to Newgrounds
-        NG_Helper.instance.NGSubmitScore(9172, (int)timer);
+        NG_Helper.instance.NGSubmitScore(9172, (int)timer * 1000); // int timer je sekunde, pretvoriti ga je treba v milisekunde za ng highscore
 
         //local highscore
         if ((double)timer < (double)Variables.Saved.Get("bestTime"))
@@ -104,6 +104,11 @@ public class SpeedrunModule : MonoBehaviour
             Variables.Saved.Set("bestTimeString", timerString);
         }
 
+        //medal unlocking
+        if (timer <= 60)
+            NG_Helper.instance.NGunlockMedal(NG_Helper.mdeal1min);
+        if (timer <= 120)
+            NG_Helper.instance.NGunlockMedal(NG_Helper.medal2min);
         //send to net
         StartCoroutine(SendHighscore());
 
