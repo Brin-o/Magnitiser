@@ -47,11 +47,19 @@ public class SpeedrunModule : MonoBehaviour
 
     void OnSceneLoaded(Scene _scene, LoadSceneMode _mode)
     {
+        Debug.Log("Entering new scene");
         if (_scene.name == "End")
-        { SendData(); timerString = ""; }
-
+        {
+            Debug.Log("Entering end scene");
+            SendNGData();
+            //SendData();
+        }
     }
-
+    public void ResetModule()
+    {
+        timerString = "";
+        timer = 0;
+    }
 
     private void Update()
     {
@@ -63,6 +71,7 @@ public class SpeedrunModule : MonoBehaviour
             TimeSpan _time = TimeSpan.FromSeconds(timer);
 
             timerString = string.Format("{0:D2}:{1:D2}.{2:D1}", _time.Minutes, _time.Seconds, _time.Milliseconds);
+
         }
 
 
@@ -90,25 +99,35 @@ public class SpeedrunModule : MonoBehaviour
 
 
     //sending highscores to the spreadsheet
+    void SendNGData()
+    {
+        int scoreAsInt = (int)timer * 1000;
+        //send to Newgrounds
+        if (NG_Helper.instance != null)
+            NG_Helper.instance.NGSubmitScore(9172, scoreAsInt); // int timer je sekunde, pretvoriti ga je treba v milisekunde za ng highscore
+
+
+        //local highscore
+        /*if ((double)timer < (double)Variables.Saved.Get("bestTime"))
+        {
+            Variables.Saved.Set("bestTime", timer);
+            Variables.Saved.Set("bestTimeString", timerString);
+        }*/
+
+        //medal unlocking
+        if (NG_Helper.instance != null)
+        {
+            if (scoreAsInt <= 60000)
+                NG_Helper.instance.NGunlockMedal(NG_Helper.mdeal1min);
+            if (scoreAsInt <= 120000)
+                NG_Helper.instance.NGunlockMedal(NG_Helper.medal2min);
+        }
+    }
+
 
     void SendData()
     {
 
-        //send to Newgrounds
-        NG_Helper.instance.NGSubmitScore(9172, (int)timer * 1000); // int timer je sekunde, pretvoriti ga je treba v milisekunde za ng highscore
-
-        //local highscore
-        if ((double)timer < (double)Variables.Saved.Get("bestTime"))
-        {
-            Variables.Saved.Set("bestTime", timer);
-            Variables.Saved.Set("bestTimeString", timerString);
-        }
-
-        //medal unlocking
-        if (timer <= 60)
-            NG_Helper.instance.NGunlockMedal(NG_Helper.mdeal1min);
-        if (timer <= 120)
-            NG_Helper.instance.NGunlockMedal(NG_Helper.medal2min);
         //send to net
         StartCoroutine(SendHighscore());
 

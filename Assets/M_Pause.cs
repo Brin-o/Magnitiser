@@ -10,6 +10,17 @@ public class M_Pause : MonoBehaviour
         SlowTime();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+            Restart();
+        else if (Input.GetKeyDown(KeyCode.M))
+            MainMenu();
+        else if (Input.GetKeyDown(KeyCode.Escape))
+            Resume();
+
+    }
+
     public void MainMenu()
     {
         NormalTime();
@@ -28,6 +39,19 @@ public class M_Pause : MonoBehaviour
     void SlowTime()
     {
         Time.timeScale = 0.000001f;
+    }
+    void Restart()
+    {
+        Resume();
+        if (SpeedrunModule.instance != null)
+        {
+            SceneManager.LoadScene(1);
+            SpeedrunModule.instance.ResetModule();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
 }

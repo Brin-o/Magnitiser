@@ -8,12 +8,13 @@ public class SpeedrunAnimation : MonoBehaviour
 {
     [SerializeField] Transform timer = null;
     [SerializeField] Transform timerAnchor = null;
-    [SerializeField] Transform banner = null;
-    [SerializeField] Transform bannerAnchor = null;
-
+    [SerializeField] Transform banner = null;[SerializeField] Transform bannerAnchor = null;
+    [SerializeField] TMP_Text timerText = null;
     private void Start()
     {
-        timer.GetComponent<TextMeshProUGUI>().text = SpeedrunModule.instance.timerString;
+        timerText.text = SpeedrunModule.instance.timerString;
+        SpeedrunModule.instance.timerString = "";
+
         Vector3 timerPos = timer.position;
         timer.position = timerAnchor.position;
         timer.DOMove(timerPos, 0.75f);

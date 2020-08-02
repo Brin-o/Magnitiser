@@ -84,12 +84,8 @@ public class PlayerController : MonoBehaviour
 
     void PauseCheck()
     {
-        //aktivira pause screen - ce je ta ze active poklice njegovo resume
-        if (Input.GetKeyDown(KeyCode.Escape))
-            if (pauseScreen.activeSelf)
-                pauseScreen.GetComponent<M_Pause>().Resume();
-            else
-                pauseScreen.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.R) && !pauseScreen.activeSelf || Input.GetKeyDown(KeyCode.Escape) && !pauseScreen.activeSelf)
+            pauseScreen.SetActive(true);
 
     }
 

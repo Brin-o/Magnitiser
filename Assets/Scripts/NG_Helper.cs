@@ -24,17 +24,21 @@ public class NG_Helper : MonoBehaviour
 
     void Start()
     {
-        ngio_core.checkLogin((bool logged_in) =>
+        ngio_core.onReady(() =>
         {
-            if (logged_in)
+            ngio_core.checkLogin((bool logged_in) =>
             {
-                onLoggedIn();
-            }
-            else
-            {
-                requestLogin();
-            }
+                if (logged_in)
+                {
+                    onLoggedIn();
+                }
+                else
+                {
+                    requestLogin();
+                }
+            });
         });
+
     }
 
     void onLoggedIn()
@@ -61,6 +65,8 @@ public class NG_Helper : MonoBehaviour
             medal_unlock.callWith(ngio_core);
             Debug.Log("Sent a message to the server to unlock medal with id " + medal_id);
         }
+        else
+            Debug.Log("Tried to unlock medal " + medal_id + " but user is not logged on");
     }
 
     public void NGSubmitScore(int score_id, int score)
@@ -75,6 +81,8 @@ public class NG_Helper : MonoBehaviour
             submit_score.callWith(ngio_core);
             Debug.Log("Send a score to the server on the score id" + score_id);
         }
+        else
+            Debug.Log("Pretend i'm sending a score of " + score + "to the scoreboard: " + score_id);
 
     }
 }

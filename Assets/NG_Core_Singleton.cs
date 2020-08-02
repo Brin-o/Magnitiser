@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class NG_Core_Singleton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static NG_Core_Singleton instance;
+    private void Awake()
     {
-        
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

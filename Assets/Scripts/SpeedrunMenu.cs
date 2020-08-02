@@ -15,24 +15,24 @@ public class SpeedrunMenu : MonoBehaviour
 
     public void InitiateSpeedrun()
     {
-        username = m_input.text;
+        //username = m_input.text;
 
-        if (username.Length == 0)
+        /*if (username.Length == 0)
             NoInputError();
 
         else
-        {
-            if (NormalModule.instance != null)
-                Destroy(NormalModule.instance.gameObject);
+        {*/
+        if (NormalModule.instance != null)
+            Destroy(NormalModule.instance.gameObject);
 
-            menuSounds.PlayVaried("clickNormal");
-            GameObject _module = Instantiate(speedrunPrefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
-            SpeedrunModule _srModule = _module.GetComponent<SpeedrunModule>();
+        menuSounds.PlayVaried("clickNormal");
+        GameObject _module = Instantiate(speedrunPrefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
+        SpeedrunModule _srModule = _module.GetComponent<SpeedrunModule>();
 
-            _srModule.username = username;
+        _srModule.username = username;
 
-            menuManager.StartGame(false);
-        }
+        menuManager.StartGame(false);
+
 
 
     }
